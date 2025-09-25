@@ -9,8 +9,6 @@ router.get('/', (req, res, next) => {
     products: adminData, 
     docTitle: 'Shop', 
     path: '/', 
-    isActiveShop: true, 
-    productCss: true 
   });
 });
 
