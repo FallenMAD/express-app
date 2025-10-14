@@ -8,14 +8,14 @@ export const productsController = {
     });
   },
 
-  addProduct(req, res, next) {
+  postAddProduct(req, res, next) {
     const { title } = req.body;
     const product = new Product(title)
     product.save(product)
     res.redirect('/');
   },
 
-  getProduct(req, res, next) {
+  getProducts(req, res, next) {
     Product.getAllProducts((products) => {
       res.render('shop', { 
         products, 
