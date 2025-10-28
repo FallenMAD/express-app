@@ -15,18 +15,28 @@ const getProductsFromFile = (cb) => {
 }
 
 export class Product {
-  constructor(title) {
-    this.title = title
+  constructor(title, imageUrl, description, price) {
+    this.title = title;
+    this.imageUrl = imageUrl;
+    this.description = description;
+    this.price = price;
   }
 
   save() {
+    this.id = Math.random().toString(36).substring(2, 11) + Date.now().toString(36)
     getProductsFromFile((products) => {
-      console.log(products)
-      products.push(this);
+      products.push({...this, id: this.id});
 
       fs.writeFile(p, JSON.stringify(products), (err) => {
         console.log(err)
       })
+    })
+  }
+
+  static findById(id, cb) {
+    getProductsFromFile(products => {
+      const product = products.find((product) => product.id === id);
+      cb(product)
     })
   }
 
