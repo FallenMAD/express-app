@@ -5,8 +5,19 @@ export const shopController = {
     Product.getAllProducts((products) => {
       res.render('shop/product-list', { 
         products, 
-        docTitle: 'Shop', 
-        path: req.url 
+        docTitle: 'Product list', 
+        path: req.originalUrl
+      });
+    })
+  },
+
+  getProductDetails(req, res, next) {
+    const { id } = req.params
+    Product.findById(id, (product) => {
+      res.render(`shop/product-details`, {
+        docTitle: 'Details Product Page',
+        path: req.originalUrl,
+        product,
       });
     })
   },
@@ -16,7 +27,31 @@ export const shopController = {
       docTitle: 'Cart',
       path: req.originalUrl
     })
-  }
+  },
+
+  getOrders(req, res, next) {
+    res.render('shop/orders', {
+      docTitle: 'Orders',
+      path: req.originalUrl
+    })
+  },
+
+  getIndex(req, res, next) {
+    Product.getAllProducts((products) => {
+      res.render('shop/index', { 
+        products, 
+        docTitle: 'Shop', 
+        path: req.originalUrl
+      });
+    })
+  },
+
+  getCheckout(req, res, next) {
+    res.render('shop/checkout', {
+      docTitle: 'Checkout',
+      path: req.originalUrl
+    })
+  },
 }
 
 
