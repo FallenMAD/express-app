@@ -4,9 +4,12 @@ import { shopController } from '../controllers/shop.js';
 
 const router = express.Router();
 
-router.get('/', shopController.getProducts);
-// router.get('/products')
+router.get('/', shopController.getIndex);
+router.get('/products', shopController.getProducts);
+
+router.get('/products/:id', shopController.getProductDetails);
 router.get('/cart', shopController.getCart);
-// router.get('/checkout');
+router.get('/orders', shopController.getOrders);
+router.get('/checkout', shopController.getCheckout);
 
 export default router;
