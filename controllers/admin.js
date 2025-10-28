@@ -9,9 +9,19 @@ export const adminController = {
   },
   
   postAddProduct(req, res, next) {
-    const { title } = req.body;
-    const product = new Product(title)
+    const { title, imageUrl, price, description } = req.body;
+    const product = new Product(title, imageUrl, description, price)
     product.save(product)
     res.redirect('/');
   },
+
+  getProducts(req, res, next) {
+    Product.getAllProducts((products) => {
+      res.render('admin/list-product', { 
+        products, 
+        docTitle: 'Admin Products', 
+        path: req.originalUrl
+      });
+    })
+  }
 }
