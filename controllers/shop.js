@@ -14,9 +14,9 @@ export const shopController = {
   getProductDetails(req, res, next) {
     const { id } = req.params
     Product.findById(id, (product) => {
-      res.render(`shop/product-details`, {
+      res.render('shop/product-details', {
         docTitle: 'Details Product Page',
-        path: req.originalUrl,
+        path: '/products',
         product,
       });
     })
@@ -27,6 +27,12 @@ export const shopController = {
       docTitle: 'Cart',
       path: req.originalUrl
     })
+  },
+
+  postCart(req, res, next) {
+    const { id } = req.body;
+    console.log(id)
+    res.redirect('/cart')
   },
 
   getOrders(req, res, next) {
