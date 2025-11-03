@@ -23,9 +23,9 @@ export class Product {
   }
 
   save() {
-    this.id = Math.random().toString(36).substring(2, 11) + Date.now().toString(36)
+    const id = Math.random().toString(36).substring(2, 11) + Date.now().toString(36)
     getProductsFromFile((products) => {
-      products.push({...this, id: this.id});
+      products.push({...this, id });
 
       fs.writeFile(p, JSON.stringify(products), (err) => {
         console.log(err)
