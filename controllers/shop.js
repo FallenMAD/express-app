@@ -1,63 +1,61 @@
-import { Product } from '../models/product.js'
+import { Product } from '../models/product.js';
 
 export const shopController = {
   getProducts(req, res, next) {
     Product.getAllProducts((products) => {
-      res.render('shop/product-list', { 
-        products, 
-        docTitle: 'Product list', 
-        path: req.originalUrl
+      res.render('shop/product-list', {
+        products,
+        docTitle: 'Product list',
+        path: req.originalUrl,
       });
-    })
+    });
   },
 
   getProductDetails(req, res, next) {
-    const { id } = req.params
+    const { id } = req.params;
     Product.findById(id, (product) => {
       res.render('shop/product-details', {
         docTitle: 'Details Product Page',
         path: '/products',
         product,
       });
-    })
+    });
   },
 
   getCart(req, res, next) {
     res.render('shop/cart', {
       docTitle: 'Cart',
-      path: req.originalUrl
-    })
+      path: req.originalUrl,
+    });
   },
 
   postCart(req, res, next) {
     const { id } = req.body;
-    console.log(id)
-    res.redirect('/cart')
+    console.log(id);
+    res.redirect('/cart');
   },
 
   getOrders(req, res, next) {
     res.render('shop/orders', {
       docTitle: 'Orders',
-      path: req.originalUrl
-    })
+      path: req.originalUrl,
+    });
   },
 
   getIndex(req, res, next) {
     Product.getAllProducts((products) => {
-      res.render('shop/index', { 
-        products, 
-        docTitle: 'Shop', 
-        path: req.originalUrl
+      res.render('shop/index', {
+        products,
+        docTitle: 'Shop',
+        path: req.originalUrl,
       });
-    })
+    });
   },
 
   getCheckout(req, res, next) {
     res.render('shop/checkout', {
       docTitle: 'Checkout',
-      path: req.originalUrl
-    })
+      path: req.originalUrl,
+    });
   },
-}
-
-
+};
