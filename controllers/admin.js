@@ -13,7 +13,13 @@ export const adminController = {
     const { title, imageUrl, price, description } = req.body;
     const product = new Product(null, title, imageUrl, description, price);
     product.save();
-    res.redirect('/');
+    res.redirect('/admin/list-product');
+  },
+
+  deleteProduct(req, res, next) {
+    const { id } = req.params;
+    Product.delete(id);
+    res.redirect('/admin/list-product');
   },
 
   getEditProduct(req, res, next) {
@@ -40,7 +46,7 @@ export const adminController = {
     const { id, title, imageUrl, price, description } = req.body;
     const product = new Product(id, title, imageUrl, description, price);
     product.save();
-    res.redirect('/');
+    res.redirect('/admin/list-product');
   },
 
   getProducts(req, res, next) {

@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { rootDir } from '../utils/dirnameHelper.js';
+import { Cart } from '../models/cart.js';
 
 const p = path.join(rootDir, 'data', 'products.json');
 
@@ -26,9 +27,7 @@ export class Product {
   save() {
     getProductsFromFile((products) => {
       if (this.id) {
-        const existingProductIndex = products.findIndex(
-          (p) => p.id === this.id
-        );
+        const existingProductIndex = products.findIndex((p) => p.id === this.id);
         const updatedProducts = [...products];
         updatedProducts[existingProductIndex] = this;
 
@@ -36,8 +35,7 @@ export class Product {
           console.log(err);
         });
       } else {
-        this.id =
-          Math.random().toString(36).substring(2, 11) + Date.now().toString(36);
+        this.id = Math.random().toString(36).substring(2, 11) + Date.now().toString(36);
 
         products.push({ ...this, id: this.id });
 
@@ -46,6 +44,19 @@ export class Product {
         });
       }
     });
+  }
+
+  static delete(id) {
+    getProductsFromFile((products) => {
+      const existingProduct = products.find((p) => p.id === id);
+      const updatedProducts = products.filter((p) => p.id !== id);
+      console.log('updatedProducts', updatedProducts);
+      fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
+        if (!err) {
+          Cart.deleteProduct(id, existingProduct.price)
+        }
+      });
+    })
   }
 
   static findById(id, cb) {
