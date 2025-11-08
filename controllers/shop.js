@@ -24,9 +24,31 @@ export const shopController = {
   },
 
   getCart(req, res, next) {
-    res.render('shop/cart', {
-      docTitle: 'Cart',
-      path: req.originalUrl,
+    Cart.getCartProducts(cart => {
+      Product.getAllProducts((products) => {
+        const cartProducts = [];
+        for (const product of products) {
+          const cartProduct = cart.products.find((item) => item.id === product.id);
+          console.log('cartProduct', cartProduct)
+          if (cartProduct) {
+            cartProducts.push({...product, qty: cartProduct.qty});
+          }
+        }
+        console.log(cartProducts);
+        res.render('shop/cart', {
+          docTitle: 'Cart',
+          path: req.originalUrl,
+          products: cartProducts,
+        });
+      })
+    })
+  },
+
+  deleteCartProduct(req, res, next) {
+    const { id } = req.params;
+    Product.findById(id, (product) => {
+      Cart.deleteProduct(id, product.price);
+      res.redirect('/cart');
     });
   },
 
