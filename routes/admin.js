@@ -13,5 +13,4 @@ router.post('/edit-product', adminController.postEditProduct);
 
 router.post('/delete-product/:id', adminController.deleteProduct);
 
-
 export default router;

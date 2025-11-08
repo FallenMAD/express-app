@@ -53,10 +53,10 @@ export class Product {
       console.log('updatedProducts', updatedProducts);
       fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
         if (!err) {
-          Cart.deleteProduct(id, existingProduct.price)
+          Cart.deleteProduct(id, existingProduct.price);
         }
       });
-    })
+    });
   }
 
   static findById(id, cb) {

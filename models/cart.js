@@ -42,9 +42,13 @@ export class Cart {
 
       const existingProductIndex = products.findIndex((p) => p.id === id);
       const updatedProducts = products.filter((p) => p.id !== id);
-      const updatedPrice = totalPrice - (existingProductIndex.qty * price);
+      const updatedPrice = totalPrice - existingProductIndex.qty * price;
 
-      fs.writeFile(p, JSON.stringify({products: updatedProducts, totalPrice: updatedPrice}), (err) => console.log(err));
-    })
+      fs.writeFile(
+        p,
+        JSON.stringify({ products: updatedProducts, totalPrice: updatedPrice }),
+        (err) => console.log(err)
+      );
+    });
   }
 }
