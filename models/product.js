@@ -50,7 +50,7 @@ export class Product {
     getProductsFromFile((products) => {
       const existingProduct = products.find((p) => p.id === id);
       const updatedProducts = products.filter((p) => p.id !== id);
-      console.log('updatedProducts', updatedProducts);
+
       fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
         if (!err) {
           Cart.deleteProduct(id, existingProduct.price);
