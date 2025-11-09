@@ -3,35 +3,39 @@ import { Cart } from '../models/cart.js';
 
 export const shopController = {
   getProducts(req, res, next) {
-    Product.getAllProducts((products) => {
-      res.render('shop/product-list', {
-        products,
-        docTitle: 'Product list',
-        path: req.originalUrl,
-      });
-    });
+    Product.getProductsFromDB()
+      .then(([products, fieldData]) => {
+        res.render('shop/product-list', {
+          products,
+          docTitle: 'Product list',
+          path: req.originalUrl,
+        });
+      })
+      .catch((err) => console.log(err));
   },
 
   getProductDetails(req, res, next) {
     const { id } = req.params;
-    Product.findById(id, (product) => {
-      res.render('shop/product-details', {
-        docTitle: 'Details Product Page',
-        path: '/products',
-        product,
-      });
-    });
+    Product.findById(id)
+      .then(result => {
+        const [product] = result[0];
+        res.render('shop/product-details', {
+          docTitle: 'Details Product Page',
+          path: '/products',
+          product,
+        });
+      }).catch((err) => console.log(err));
   },
 
   getCart(req, res, next) {
-    Cart.getCartProducts(cart => {
-      Product.getAllProducts((products) => {
+    Cart.getCartProducts((cart) => {
+      Product.getProductsFromDB((products) => {
         const cartProducts = [];
         for (const product of products) {
           const cartProduct = cart.products.find((item) => item.id === product.id);
-          console.log('cartProduct', cartProduct)
+          console.log('cartProduct', cartProduct);
           if (cartProduct) {
-            cartProducts.push({...product, qty: cartProduct.qty});
+            cartProducts.push({ ...product, qty: cartProduct.qty });
           }
         }
         console.log(cartProducts);
@@ -40,8 +44,8 @@ export const shopController = {
           path: req.originalUrl,
           products: cartProducts,
         });
-      })
-    })
+      });
+    });
   },
 
   deleteCartProduct(req, res, next) {
@@ -68,13 +72,17 @@ export const shopController = {
   },
 
   getIndex(req, res, next) {
-    Product.getAllProducts((products) => {
-      res.render('shop/index', {
-        products,
-        docTitle: 'Shop',
-        path: req.originalUrl,
+    Product.getProductsFromDB()
+      .then(([products, fieldData]) => {
+        res.render('shop/index', {
+          products,
+          docTitle: 'Shop',
+          path: req.originalUrl,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    });
   },
 
   getCheckout(req, res, next) {
