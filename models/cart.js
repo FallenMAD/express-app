@@ -62,8 +62,8 @@ export class Cart {
       if (err) {
         cb(null);
       } else {
-        cb(cart)
+        cb(cart);
       }
-    })
+    });
   }
 }
