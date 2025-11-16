@@ -6,6 +6,7 @@ import { rootDir } from './utils/dirnameHelper.js';
 import adminRoutes from './routes/admin.js';
 import shopRoutes from './routes/shop.js';
 import { errorController } from './controllers/error.js';
+import { sequelize } from './utils/database.js';
 
 const app = express();
 
@@ -20,4 +21,11 @@ app.use(shopRoutes);
 
 app.use(errorController.handle404);
 
-app.listen(3003);
+sequelize
+  .sync()
+  .then((result) => {
+    app.listen(3003);
+  })
+  .catch((error) => {
+    console.log(error);
+  });
