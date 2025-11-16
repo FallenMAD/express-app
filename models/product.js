@@ -1,29 +1,26 @@
-import { Cart } from '../models/cart.js';
-import { pool as db } from '../utils/database.js';
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../utils/database.js';
 
-export class Product {
-  constructor(id, title, imageUrl, description, price) {
-    this.id = id;
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
-  }
-
-  save() {
-    return db.execute(
-      'INSERT INTO products(title, price, description, imageUrl) VALUES (?, ?, ?, ?)',
-      [this.title, this.price, this.description, this.imageUrl],
-    )
-  }
-
-  static delete(id) {}
-
-  static findById(id) {
-    return db.execute('SELECT * FROM products WHERE id = ?', [id]);
-  }
-
-  static getProductsFromDB() {
-    return db.execute('SELECT * FROM products');
-  }
-}
+export const Product = sequelize.define('Product', {
+  id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    autoIncrement: true,
+    primaryKey: true,
+  },
+  title: {
+    type: DataTypes.STRING,
+  },
+  price: {
+    type: DataTypes.DOUBLE,
+    allowNull: false,
+  },
+  imageURL: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+});
