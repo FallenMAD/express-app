@@ -2,7 +2,8 @@ import { Product } from '../models/product.js';
 
 export const adminController = {
   getProducts(req, res, next) {
-    Product.findAll()
+    req.user
+      .getProducts()
       .then((result) => {
         res.render('admin/list-product', {
           products: result,
@@ -22,11 +23,12 @@ export const adminController = {
   },
 
   postAddProduct(req, res, next) {
-    const { title, imageUrl, price, description } = req.body;
-    Product.create({
+    const { title, imageURL, price, description } = req.body;
+    console.log(req.body);
+    req.user.createProduct({
       title,
       price,
-      imageURL: imageUrl,
+      imageURL,
       description,
     })
       .then((result) => {
@@ -47,18 +49,23 @@ export const adminController = {
   },
 
   getEditProduct(req, res, next) {
-    const { id } = req.params;
     const isEditMode = req.query.edit;
     if (!isEditMode) {
       return res.redirect('/');
     }
 
-    Product.findByPk(id)
+    const { id } = req.params;
+    req.user.getProducts({ where: { id } })
+      // Product.findByPk(id)
       .then((result) => {
+        const product = result[0];
+        if (!product) {
+          return res.redirect('/');
+        }
         res.render('admin/edit-product', {
           docTitle: 'Editing Product',
           path: req.originalUrl,
-          product: result,
+          product: result[0],
           editing: isEditMode,
         });
       })
