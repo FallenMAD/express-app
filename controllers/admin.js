@@ -25,12 +25,13 @@ export const adminController = {
   postAddProduct(req, res, next) {
     const { title, imageURL, price, description } = req.body;
     console.log(req.body);
-    req.user.createProduct({
-      title,
-      price,
-      imageURL,
-      description,
-    })
+    req.user
+      .createProduct({
+        title,
+        price,
+        imageURL,
+        description,
+      })
       .then((result) => {
         res.redirect('/admin/list-product');
       })
@@ -55,7 +56,8 @@ export const adminController = {
     }
 
     const { id } = req.params;
-    req.user.getProducts({ where: { id } })
+    req.user
+      .getProducts({ where: { id } })
       // Product.findByPk(id)
       .then((result) => {
         const product = result[0];
