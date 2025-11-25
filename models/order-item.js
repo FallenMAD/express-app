@@ -8,4 +8,5 @@ export const OrderItem = sequelize.define('OrderItem', {
     autoIncrement: true,
     primaryKey: true,
   },
+  quantity: DataTypes.INTEGER,
 });

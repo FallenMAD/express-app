@@ -109,17 +109,46 @@ export const shopController = {
       .catch((err) => console.log(err));
   },
 
-  getOrders(req, res, next) {
-    res.render('shop/orders', {
-      docTitle: 'Orders',
-      path: req.originalUrl,
-    });
+  postOrder(req, res, next) {
+    let fetchedCart;
+    req.user
+      .getCart()
+      .then((cart) => {
+        fetchedCart = cart;
+        return cart.getProducts();
+      })
+      .then((products) => {
+        return req.user
+          .createOrder()
+          .then((order) => {
+            return order.addProducts(
+              products.map((product) => {
+                product.orderItem = { quantity: product.CartItem.quantity };
+                return product;
+              })
+            );
+          })
+          .catch((err) => console.log(err));
+      })
+      .then((result) => {
+        return fetchedCart.setProducts(null);
+      })
+      .then(() => {
+        res.redirect('/orders');
+      })
+      .catch((err) => console.log(err));
   },
 
-  getCheckout(req, res, next) {
-    res.render('shop/checkout', {
-      docTitle: 'Checkout',
-      path: req.originalUrl,
-    });
+  getOrders(req, res, next) {
+    req.user
+      .getOrders({ include: ['Products'] })
+      .then((orders) => {
+        res.render('shop/orders', {
+          docTitle: 'Orders',
+          path: req.originalUrl,
+          orders,
+        });
+      })
+      .catch((err) => console.log(err));
   },
 };
