@@ -75,12 +75,12 @@ export const adminController = {
   },
 
   postEditProduct(req, res, next) {
-    const { id, title, imageUrl, price, description } = req.body;
+    const { id, title, imageURL, price, description } = req.body;
 
     Product.findByPk(id)
       .then((product) => {
         product.title = title;
-        product.imageURL = imageUrl;
+        product.imageURL = imageURL;
         product.price = price;
         product.description = description;
 
